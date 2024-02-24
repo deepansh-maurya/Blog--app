@@ -8,12 +8,12 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Myfeed from "./pages/myfeed/index.js";
-import Login from "./pages/login/index.js";
-import Signup from "./pages/signup/index.js";
-import Write from "./pages/write/index.js";
-import Profile from "./pages/profile/index.js";
-import Explore from "./pages/explore/index.js";
+import Myfeed from "./pages/myfeed/index.jsx";
+import Login from "./pages/login/index.jsx";
+import Signup from "./pages/signup/index.jsx";
+import Write from "./pages/write/index.jsx";
+import Profile from "./pages/profile/index.jsx";
+import Explore from "./pages/explore/index.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
