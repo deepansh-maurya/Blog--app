@@ -1,9 +1,9 @@
 const conf = {
   url: String("https://cloud.appwrite.io/v1"),
   project_id: String("65d9c847a533f5a6c8c7"),
-  databse_id: String(import.meta.env.VITE_ARRWRITE_DATABASE_ID),
-  article_id: String(import.meta.env.VITE_ARRWRITE_COLLECTION_ARTICLE_ID),
-  user_id: String(import.meta.env.VITE_ARRWRITE_COLLECTION_USER_ID),
-  bucket_id: String(import.meta.env.VITE_ARRWRITE_BUCKET_ID),
+  databse_id: String("65d9d897265d9c6dccb9"),
+  article_id: String("65d9d8a217b37516cdb2"),
+  user_id: String("65d9dbd5543d60b290ce"),
+  bucket_id: String("65d9ddb56f7eb527dd0d"),
 };
 export default conf;
