@@ -11,7 +11,7 @@ export default function Login() {
     e.preventDefault();
     navigate("/myfeed");
     // const response = await loginUser(email, password);
-    console.log(response);
+    // console.log(response);
   };
 
   return (

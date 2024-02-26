@@ -12,7 +12,7 @@ import Myfeed from "./pages/myfeed/index.jsx";
 import Login from "./pages/login/index.jsx";
 import Signup from "./pages/signup/index.jsx";
 import Write from "./pages/write/index.jsx";
-import Profile from "./pages/profile/index.jsx";
+import ProfileSection from "./pages/profile/index.jsx";
 import Explore from "./pages/explore/index.jsx";
 import Layer from "./Layer.jsx";
 const router = createBrowserRouter(
@@ -23,7 +23,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/write" element={<Write />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<ProfileSection />} />
       <Route path="/explore" element={<Explore />} />
     </Route>
   )

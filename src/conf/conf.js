@@ -3,7 +3,8 @@ const conf = {
   project_id: String("65d9c847a533f5a6c8c7"),
   databse_id: String("65d9d897265d9c6dccb9"),
   article_id: String("65d9d8a217b37516cdb2"),
-  user_id: String("65d9dbd5543d60b290ce"),
+  profile_id: String("65d9dbd5543d60b290ce"),
   bucket_id: String("65d9ddb56f7eb527dd0d"),
+  linkedWithProfile: String("65dca4657d8b60948124"),
 };
 export default conf;

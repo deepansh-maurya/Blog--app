@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../appwriteBackend/authentication/auth";
+import { useDatabse } from "../../appwriteBackend/database/databse";
 export default function Signup() {
+  const { setProfileCredentialWhileSignUp, getSingleFieldFromDatabase } =
+    useDatabse();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    fullname: "",
+    username: "",
   });
   const { signUpUser } = useAuth();
   const handleChange = (e) => {
@@ -18,12 +21,20 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const val = await signUpUser(
-      formData.email,
-      formData.password,
-      formData.fullname
+    let result = await getSingleFieldFromDatabase();
+    result = result.documents;
+    console.log(result);
+    result.forEach((item) =>
+      item.username === formData.username
+        ? alert("username already exits")
+        : null
     );
-    console.log(val);
+    // const val = await signUpUser(
+    //   formData.email,
+    //   formData.password,
+    //   formData.username
+    // );
+    // console.log(result.documents);
   };
 
   return (
@@ -35,16 +46,16 @@ export default function Signup() {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              htmlFor="fullname"
+              htmlFor="username"
               className="block text-gray-600 text-sm font-medium mb-2"
             >
-              Full Name
+              Username
             </label>
             <input
-              type="fullname"
-              id="fullname"
-              name="fullname"
-              value={formData.fullname}
+              type="text"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               className="w-full border px-4 py-2 rounded focus:outline-none focus:border-purple-500"
               required

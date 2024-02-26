@@ -4,23 +4,24 @@ import Navbar from "./components/Navbar";
 import { useAuth } from "./appwriteBackend/authentication/auth";
 
 function Layer() {
-  const [validate, setvalidate] = useState(false);
-  console.log(validate);
-  let navigate = useNavigate();
-  const { checkLogin } = useAuth();
-  async function validateUser() {
-    const val = await checkLogin();
-    if (val) {
-      setvalidate(true);
-      navigate("/myfeed");
-    } else navigate("/login");
-  }
-  useEffect(() => {
-    validateUser();
-  }, []);
+  // const [validate, setvalidate] = useState(false);
+  // console.log(validate);
+  // let navigate = useNavigate();
+  // const { checkLogin } = useAuth();
+  // async function validateUser() {
+  //   const val = await checkLogin();
+  //   if (val) {
+  //     setvalidate(true);
+  //     navigate("/myfeed");
+  //   } else navigate("/login");
+  // }
+  // useEffect(() => {
+  //   validateUser();
+  // }, []);
   return (
     <div>
-      {validate ? <Navbar /> : null}
+      {/* {validate ? <Navbar /> : null} */}
+      <Navbar />
       <Outlet />
     </div>
   );
