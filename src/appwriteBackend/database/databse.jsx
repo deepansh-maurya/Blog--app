@@ -13,21 +13,20 @@ export default function DatabaseContextPRovider({ children }) {
     category,
     tags,
     image,
-    userid,
     date,
-    slug,
     status,
+    slug,
   }) {
     try {
-      const promise = databases.createDocument(
+      const promise = await databases.createDocument(
         conf.databse_id,
         conf.article_id,
         slug,
-        { title, content, category, tags, image, userid, date, status }
+        { title, content, category, tags, image, date, status, slug }
       );
       if (promise) return true;
     } catch (error) {
-      return false;
+      return error;
     }
   }
   async function updatePost({
@@ -36,17 +35,16 @@ export default function DatabaseContextPRovider({ children }) {
     category,
     tags,
     image,
-    userid,
     date,
-    slug,
     status,
+    slug,
   }) {
     try {
-      const promise = databases.updateDocument(
+      const promise = await databases.updateDocument(
         conf.databse_id,
         conf.article_id,
         slug,
-        { title, content, category, tags, image, userid, date, status }
+        { title, content, category, tags, image, date, status, slug }
       );
       if (promise) return true;
     } catch (error) {
@@ -55,7 +53,7 @@ export default function DatabaseContextPRovider({ children }) {
   }
   async function deletePost(slug) {
     try {
-      const promise = databases.deleteDocument(
+      const promise = await databases.deleteDocument(
         conf.databse_id,
         conf.article_id,
         slug
@@ -68,7 +66,7 @@ export default function DatabaseContextPRovider({ children }) {
 
   async function getPosts() {
     try {
-      const promise = databases.listDocuments(
+      const promise = await databases.listDocuments(
         conf.databse_id,
         conf.article_id,
         [Query.equal("status", "active")]

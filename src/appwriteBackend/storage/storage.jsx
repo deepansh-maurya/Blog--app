@@ -10,7 +10,11 @@ const storage = new Storage(client);
 export default function StorageContextProvider({ children }) {
   async function createPostImage(file) {
     try {
-      const promise = storage.createFile(conf.bucket_id, ID.unique(), file);
+      const promise = await storage.createFile(
+        conf.bucket_id,
+        ID.unique(),
+        file
+      );
       if (promise) return promise;
     } catch (error) {
       return false;
@@ -19,7 +23,7 @@ export default function StorageContextProvider({ children }) {
 
   async function deletePostImage(fileid) {
     try {
-      const pormise = storage.deleteFile(conf.bucket_id, fileid);
+      const pormise = await storage.deleteFile(conf.bucket_id, fileid);
       return true;
     } catch (error) {
       return false;
@@ -27,7 +31,7 @@ export default function StorageContextProvider({ children }) {
   }
   async function imagePreview(fileid) {
     try {
-      const promise = storage.getFilePreview(conf.bucket_id, fileid);
+      const promise = await storage.getFilePreview(conf.bucket_id, fileid);
       return promise;
     } catch (error) {
       return false;

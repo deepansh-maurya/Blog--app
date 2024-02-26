@@ -14,9 +14,11 @@ import Signup from "./pages/signup/index.jsx";
 import Write from "./pages/write/index.jsx";
 import Profile from "./pages/profile/index.jsx";
 import Explore from "./pages/explore/index.jsx";
+import Layer from "./Layer.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="/" element={<Layer />} />
       <Route path="/myfeed" element={<Myfeed />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
