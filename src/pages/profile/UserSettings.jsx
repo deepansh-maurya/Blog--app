@@ -1,23 +1,28 @@
 import React, { useState } from "react";
+import { useDatabse } from "../../appwriteBackend/database/databse";
+import { useStorage } from "../../appwriteBackend/storage/storage";
 
 export default function UserSettings() {
+  const { setOtherProfileCred } = useDatabse();
+  const { createPostImage } = useStorage();
   const [settings, setSettings] = useState({
-    fullName: "",
+    fullname: "",
     tagline: "",
-    photo: "",
+    image: "",
     about: "",
     skills: "",
     twitter: "",
     instagram: "",
     facebook: "",
-    website: "",
     linkedin: "",
-    username: "",
-    email: "",
+    website: "",
   });
   const [file, setfile] = useState(null);
-  const handleUpdate = () => {
-    console.log("Updating user settings:", settings);
+  const handleUpdate = async () => {
+    const imageid = await createPostImage(file);
+    setSettings((prev) => ({ ...prev, image: imageid }));
+    const promise = await setOtherProfileCred(settings);
+    console.log(promise);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../appwriteBackend/authentication/auth";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 export default function Signup() {
@@ -11,6 +11,7 @@ export default function Signup() {
     password: "",
     username: "",
   });
+  const navigate = useNavigate();
   const { signUpUser } = useAuth();
   const handleChange = (e) => {
     setFormData({
@@ -24,17 +25,30 @@ export default function Signup() {
     let result = await getSingleFieldFromDatabase();
     result = result.documents;
     console.log(result);
-    result.forEach((item) =>
-      item.username === formData.username
-        ? alert("username already exits")
-        : null
-    );
-    // const val = await signUpUser(
-    //   formData.email,
-    //   formData.password,
-    //   formData.username
-    // );
-    // console.log(result.documents);
+    let flag = true;
+    result.forEach((item) => {
+      if (item.username === formData.username) {
+        alert("username already exits");
+        flag = false;
+      }
+    });
+    if (flag) {
+      const val = await signUpUser(
+        formData.email,
+        formData.password,
+        formData.username
+      );
+      if (val) {
+        navigate("/myfeed");
+      } else {
+        alert("error occured try again");
+      }
+    }
+    setFormData({
+      email: "",
+      password: "",
+      username: "",
+    });
   };
 
   return (

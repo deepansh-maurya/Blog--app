@@ -103,22 +103,26 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
 
-  async function setOtherProfileCred({
-    fullname,
-    tagline,
-    image,
-    about,
-    skills,
-    twitter,
-    instagram,
-    facebook,
-    linkedin,
-    website,
-  }) {
+  async function setOtherProfileCred(
+    username,
+    {
+      fullname,
+      tagline,
+      image,
+      about,
+      skills,
+      twitter,
+      instagram,
+      facebook,
+      linkedin,
+      website,
+    }
+  ) {
     try {
-      const promise = await databases.createDocument(
+      const promise = await databases.updateDocument(
         conf.databse_id,
         conf.profile_id,
+        username,
         {
           fullname,
           tagline,

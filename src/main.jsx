@@ -18,7 +18,7 @@ import Layer from "./Layer.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/" element={<Layer />} />
+      <Route path="/layer" element={<Layer />} />
       <Route path="/myfeed" element={<Myfeed />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
