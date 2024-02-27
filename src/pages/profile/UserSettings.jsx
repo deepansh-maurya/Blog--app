@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 import { useStorage } from "../../appwriteBackend/storage/storage";
+import { useBlog } from "../../global/blogcontext";
 
 export default function UserSettings() {
+  const { username } = useBlog();
+  const { getTheProfileDocument } = useDatabse();
+
   const { setOtherProfileCred } = useDatabse();
   const { createPostImage } = useStorage();
   const [settings, setSettings] = useState({
@@ -11,17 +15,45 @@ export default function UserSettings() {
     image: "",
     about: "",
     skills: "",
+    email: "",
     twitter: "",
     instagram: "",
     facebook: "",
     linkedin: "",
+    username: "",
     website: "",
   });
+  async function getCred() {
+    const promise = await getTheProfileDocument(username);
+    if (promise != undefined) {
+      setSettings({
+        fullname: promise.fullname,
+        tagline: promise.tagline,
+        image: promise.image,
+        about: promise.about,
+        username: promise.username,
+        skills: promise.skills,
+        email: promise.email,
+        twitter: promise.twitter,
+        instagram: promise.instagram,
+        facebook: promise.facebook,
+        linkedin: promise.linkedin,
+        website: promise.website,
+      });
+    }
+    console.log(promise);
+  }
+  useEffect(() => {
+    console.log(settings);
+  }, [settings]);
+  useEffect(() => {
+    getCred();
+  }, []);
   const [file, setfile] = useState(null);
   const handleUpdate = async () => {
-    const imageid = await createPostImage(file);
-    setSettings((prev) => ({ ...prev, image: imageid }));
-    const promise = await setOtherProfileCred(settings);
+    // const imageid = await createPostImage(file);
+    // setSettings((prev) => ({ ...prev, image: imageid }));
+    const promise = await setOtherProfileCred(username, settings);
     console.log(promise);
   };
 
@@ -37,9 +69,9 @@ export default function UserSettings() {
           </label>
           <input
             type="text"
-            value={settings.fullName}
+            value={settings.fullname}
             onChange={(e) =>
-              setSettings({ ...settings, fullName: e.target.value })
+              setSettings({ ...settings, fullname: e.target.value })
             }
             className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           />
@@ -179,9 +211,10 @@ export default function UserSettings() {
           <input
             type="text"
             value={settings.username}
-            onChange={(e) =>
-              setSettings({ ...settings, username: e.target.value })
-            }
+            readOnly
+            // onChange={(e) =>
+            //   setSettings({ ...settings, username: e.target.value })
+            // }
             className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           />
         </div>
@@ -192,9 +225,10 @@ export default function UserSettings() {
           <input
             type="text"
             value={settings.email}
-            onChange={(e) =>
-              setSettings({ ...settings, email: e.target.value })
-            }
+            readOnly
+            // onChange={(e) =>
+            //   setSettings({ ...settings, email: e.target.value })
+            // }
             className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           />
         </div>

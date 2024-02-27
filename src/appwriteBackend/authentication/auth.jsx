@@ -11,7 +11,7 @@ export default function AuthContextProvider({ children }) {
     console.log(email, password, name);
     try {
       const response = await account.create(ID.unique(), email, password, name);
-      console.log(response);
+      console.log("singup", response);
       if (response) return response;
     } catch (error) {
       return error;

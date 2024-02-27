@@ -1,12 +1,15 @@
 import { Client, Databases, ID, Query } from "appwrite";
 import conf from "../../conf/conf";
 import { createContext, useContext } from "react";
+import { useBlog } from "../../global/blogcontext";
 const DatabaseContext = createContext();
 const client = new Client().setEndpoint(conf.url).setProject(conf.project_id);
 
 const databases = new Databases(client);
 
 export default function DatabaseContextPRovider({ children }) {
+  const { username } = useBlog();
+  //functions for handling posts
   async function createPost({
     title,
     content,
@@ -76,7 +79,10 @@ export default function DatabaseContextPRovider({ children }) {
       return false;
     }
   }
+  /////
 
+  // functions for handling the profile component
+  //funtions to get single field from database
   async function getSingleFieldFromDatabase() {
     try {
       const promise = await databases.listDocuments(
@@ -90,11 +96,14 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
 
-  async function setProfileCredentialWhileSignUp({ username, email }) {
+  // function to set username and email while sign up
+  async function setProfileCredentialWhileSignUp(id, { username, email }) {
+    console.log(username, email);
     try {
       const promise = await databases.createDocument(
         conf.databse_id,
         conf.profile_id,
+        id,
         { username, email }
       );
       if (promise) return true;
@@ -103,9 +112,12 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
 
+  // to edit the profile section
   async function setOtherProfileCred(
-    username,
+    id,
     {
+      username,
+      email,
       fullname,
       tagline,
       image,
@@ -122,8 +134,10 @@ export default function DatabaseContextPRovider({ children }) {
       const promise = await databases.updateDocument(
         conf.databse_id,
         conf.profile_id,
-        username,
+        id,
         {
+          username,
+          email,
           fullname,
           tagline,
           image,
@@ -142,18 +156,39 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
 
-  async function setOtherFieldsOfProfile({ following, follower }) {
+  // to set the follower
+  async function setOtherFieldsOfProfile(
+    username,
+    { following, follower, email }
+  ) {
+    console.log(follower, following, email);
     try {
       const promise = await databases.createDocument(
         conf.databse_id,
         conf.linkedWithProfile,
-        { following, follower }
+        username,
+        { following, follower, email }
       );
       if (promise) return true;
     } catch (error) {
       return error;
     }
   }
+
+  // to get the document of profile
+  async function getTheProfileDocument(username) {
+    try {
+      const promise = await databases.getDocument(
+        conf.databse_id,
+        conf.profile_id,
+        username
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
+  /////////////
   return (
     <DatabaseContext.Provider
       value={{
@@ -165,6 +200,7 @@ export default function DatabaseContextPRovider({ children }) {
         setOtherProfileCred,
         setProfileCredentialWhileSignUp,
         getSingleFieldFromDatabase,
+        getTheProfileDocument,
       }}
     >
       {children}

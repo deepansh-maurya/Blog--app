@@ -3,9 +3,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../appwriteBackend/authentication/auth";
 import { useDatabse } from "../../appwriteBackend/database/databse";
+import { useBlog } from "../../global/blogcontext";
 export default function Signup() {
-  const { setProfileCredentialWhileSignUp, getSingleFieldFromDatabase } =
-    useDatabse();
+  const { setusername } = useBlog();
+  const {
+    setProfileCredentialWhileSignUp,
+    getSingleFieldFromDatabase,
+    setOtherFieldsOfProfile,
+  } = useDatabse();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -38,7 +43,20 @@ export default function Signup() {
         formData.password,
         formData.username
       );
+
       if (val) {
+        const res = await setProfileCredentialWhileSignUp(formData.username, {
+          username: formData.username,
+          email: formData.email,
+        });
+
+        const res2 = await setOtherFieldsOfProfile(formData.username, {
+          following: null,
+          follower: null,
+          email: formData.email,
+        });
+        console.log(res, res2);
+        setusername(formData.username);
         navigate("/myfeed");
       } else {
         alert("error occured try again");

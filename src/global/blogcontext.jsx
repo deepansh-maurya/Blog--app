@@ -3,9 +3,10 @@ import { createContext, useContext, useState } from "react";
 const GLobalBlogContext = createContext();
 
 export default function GlobalBlogContextProvider({ children }) {
-  const [email, setemail] = useState("");
+  const [username, setusername] = useState("");
+  console.log(username);
   return (
-    <GLobalBlogContext.Provider value={{ email, setemail }}>
+    <GLobalBlogContext.Provider value={{ username, setusername }}>
       {children}
     </GLobalBlogContext.Provider>
   );
