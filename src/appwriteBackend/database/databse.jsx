@@ -174,13 +174,28 @@ export default function DatabaseContextPRovider({ children }) {
       return error;
     }
   }
-
+  async function updateFollowerFollowing(
+    username,
+    { following, follower, email }
+  ) {
+    try {
+      const promise = await databases.updateDocument(
+        conf.databse_id,
+        conf.linkedWithProfile,
+        username,
+        { following, follower, email }
+      );
+      if (promise) return true;
+    } catch (error) {
+      return error;
+    }
+  }
   // to get the document of profile
-  async function getTheProfileDocument(username) {
+  async function getTheProfileDocument(username, collectionId) {
     try {
       const promise = await databases.getDocument(
         conf.databse_id,
-        conf.profile_id,
+        collectionId,
         username
       );
       if (promise) return promise;
@@ -201,6 +216,7 @@ export default function DatabaseContextPRovider({ children }) {
         setProfileCredentialWhileSignUp,
         getSingleFieldFromDatabase,
         getTheProfileDocument,
+        updateFollowerFollowing,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 import { useStorage } from "../../appwriteBackend/storage/storage";
 import { useBlog } from "../../global/blogcontext";
-
+import conf from "../../conf/conf";
 export default function UserSettings() {
   const { username } = useBlog();
   const { getTheProfileDocument } = useDatabse();
@@ -24,7 +24,7 @@ export default function UserSettings() {
     website: "",
   });
   async function getCred() {
-    const promise = await getTheProfileDocument(username);
+    const promise = await getTheProfileDocument(username, conf.profile_id);
     if (promise != undefined) {
       setSettings({
         fullname: promise.fullname,

@@ -32,12 +32,12 @@ export default function Write() {
     const imageid = await createPostImage(file);
     setFormData((prevData) => ({
       ...prevData,
-      image: imageid,
+      image: "imageid",
       date: date,
     }));
 
-    // const res = await createPost(formData);
-    // console.log(res);
+    const res = await createPost(formData);
+    console.log(res);
   };
 
   return (
@@ -111,11 +111,11 @@ export default function Write() {
         <label className="block text-gray-700 font-bold mb-2">Content:</label>
         <Editor
           apiKey="6cbx0irs9jtviit23c1e9dak2ktwvfchhyzuwpkps6pqyhpq"
+          initialValue={formData.content}
           init={{
             height: 500,
             menubar: false,
             plugins: [
-              "image",
               "advlist",
               "autolink",
               "lists",
@@ -134,14 +134,15 @@ export default function Write() {
               "code",
               "help",
               "wordcount",
-              "anchor",
             ],
             toolbar:
-              "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
+              "undo redo | blocks | " +
+              "bold italic forecolor | alignleft aligncenter " +
+              "alignright alignjustify | bullist numlist outdent indent | " +
+              "removeformat | help",
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}
-          initialValue={formData.content}
           onEditorChange={(content) =>
             setFormData((prevData) => ({ ...prevData, content }))
           }

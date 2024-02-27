@@ -3,8 +3,15 @@ import Manageblogs from "./Manageblogs";
 import { Account } from "./Account";
 import UserSettings from "./UserSettings";
 import Profile from "./Profile";
+import { useAuth } from "../../appwriteBackend/authentication/auth";
 export default function ProfileSection() {
   const [state, setstate] = useState("setting");
+  const { logOut } = useAuth();
+  async function Logout() {
+    console.log("Aa agaya ");
+    const promise = await logOut();
+    console.log(promise);
+  }
   return (
     <div className="flex h-screen bg-gray-200   ">
       <div className="w-1/4 bg-gray-800 text-white p-6">
@@ -37,11 +44,20 @@ export default function ProfileSection() {
           className={`cursor-pointer py-2 ${
             state === "account" && "bg-gray-600"
           }`}
-          onClick={() => setstate("account")}
+          onClick={() => {
+            setstate("account");
+          }}
         >
           Account
         </div>
-        <div className="cursor-pointer py-2">Logout</div>
+        <div
+          className="cursor-pointer py-2"
+          onClick={() => {
+            Logout();
+          }}
+        >
+          Logout
+        </div>
       </div>
 
       <div className="w-3/4 p-6">

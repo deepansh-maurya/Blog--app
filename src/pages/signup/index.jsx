@@ -5,7 +5,6 @@ import { useAuth } from "../../appwriteBackend/authentication/auth";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 import { useBlog } from "../../global/blogcontext";
 export default function Signup() {
-  const { setusername } = useBlog();
   const {
     setProfileCredentialWhileSignUp,
     getSingleFieldFromDatabase,
@@ -55,9 +54,6 @@ export default function Signup() {
           follower: null,
           email: formData.email,
         });
-        console.log(res, res2);
-        setusername(formData.username);
-        navigate("/myfeed");
       } else {
         alert("error occured try again");
       }

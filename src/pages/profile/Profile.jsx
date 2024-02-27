@@ -1,12 +1,16 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import conf from "../../conf/conf";
+import { useDatabse } from "../../appwriteBackend/database/databse";
+import { useBlog } from "../../global/blogcontext";
 export default function Profile() {
-  const profileData = {
-    profilePic: "https://example.com/profile-pic.jpg",
-    username: "john_doe",
-    tagline: "Web Developer | Blogger",
-    followers: 1000,
-    following: 500,
+  const { username } = useBlog();
+  const { getTheProfileDocument } = useDatabse();
+  const [profileData, setprofiledata] = useState({
+    profilePic: "",
+    username: "",
+    tagline: "",
+    followers: null,
+    following: null,
     topFiveBlogs: [
       { id: 1, title: "Blog 1" },
       { id: 2, title: "Blog 2" },
@@ -14,7 +18,29 @@ export default function Profile() {
       { id: 4, title: "Blog 4" },
       { id: 5, title: "Blog 5" },
     ],
-  };
+  });
+  async function getTheCred() {
+    console.log(username, "usernamw");
+    const cred = await getTheProfileDocument(username, conf.profile_id);
+    const cred2 = await getTheProfileDocument(
+      "useruser",
+      conf.linkedWithProfile
+    );
+    setprofiledata((prev) => ({
+      ...prev,
+      profilePic: cred.image,
+      username: cred.username,
+      tagline: cred.tagline,
+      followers: cred2.followers,
+      following: cred2.following,
+    }));
+
+    console.log(cred, cred2);
+  }
+
+  useEffect(() => {
+    getTheCred();
+  }, []);
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">

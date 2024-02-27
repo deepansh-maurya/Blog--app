@@ -6,12 +6,10 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { loginUser } = useAuth();
-  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/myfeed");
-    // const response = await loginUser(email, password);
-    // console.log(response);
+    const response = await loginUser(email, password);
+    console.log(response);
   };
 
   return (
