@@ -3,7 +3,9 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 import { useStorage } from "../../appwriteBackend/storage/storage";
+import { useBlog } from "../../global/blogcontext";
 export default function Write() {
+  const { username } = useBlog();
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -16,27 +18,43 @@ export default function Write() {
   });
   const [file, setfile] = useState(null);
   const { createPostImage } = useStorage();
-  const { createPost } = useDatabse();
+  const { createPost, likeReviewsWIthPosts } = useDatabse();
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+    if (name == "title") {
+      let val = event.target.value;
+      let slug = "";
+      for (let i = 0; i < val.length; i++) {
+        if (val[i] == " ") {
+          slug = slug + "-";
+        } else {
+          slug = slug + val[i];
+        }
+      }
+      setFormData((prevData) => ({
+        ...prevData,
+        slug: slug,
+      }));
+    }
   };
 
   const handleSubmit = async () => {
     console.log("file", file);
     const date = new Date();
 
-    const imageid = await createPostImage(file);
+    // const imageid = await createPostImage(file);
     setFormData((prevData) => ({
       ...prevData,
       image: "imageid",
       date: date,
     }));
-
-    const res = await createPost(formData);
+    const promise = await likeReviewsWIthPosts(formData.slug);
+    console.log(promise);
+    const res = await createPost(username, formData);
     console.log(res);
   };
 
@@ -92,7 +110,8 @@ export default function Write() {
           type="text"
           name="slug"
           value={formData.slug}
-          onChange={handleChange}
+          readOnly
+          // onChange={handleChange}
           className="w-full border rounded py-2 px-3"
         />
       </div>

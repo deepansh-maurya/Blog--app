@@ -10,22 +10,16 @@ const databases = new Databases(client);
 export default function DatabaseContextPRovider({ children }) {
   const { username } = useBlog();
   //functions for handling posts
-  async function createPost({
-    title,
-    content,
-    category,
-    tags,
-    image,
-    date,
-    status,
-    slug,
-  }) {
+  async function createPost(
+    username,
+    { title, content, category, tags, image, date, status, slug }
+  ) {
     try {
       const promise = await databases.createDocument(
         conf.databse_id,
         conf.article_id,
         slug,
-        { title, content, category, tags, image, date, status, slug }
+        { title, content, category, tags, image, date, status, slug, username }
       );
       if (promise) return true;
     } catch (error) {
@@ -77,6 +71,19 @@ export default function DatabaseContextPRovider({ children }) {
       if (promise) return promise;
     } catch (error) {
       return false;
+    }
+  }
+
+  async function toGetAllBlogs() {
+    try {
+      const promise = await databases.listDocuments(
+        conf.databse_id,
+        conf.article_id,
+        [Query.equal("username", username)]
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
     }
   }
   /////
@@ -204,6 +211,34 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
   /////////////
+
+  // manage posts
+
+  async function likeReviewsWIthPosts(slug, comments, likes) {
+    try {
+      const promise = await databases.createDocument(
+        conf.databse_id,
+        conf.reviewsCollection,
+        slug,
+        { slug, comments, likes }
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
+  async function getReviews(slug) {
+    try {
+      const promise = await getDocument(
+        conf.databse_id,
+        conf.likeReviewsWIthPosts,
+        slug
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
   return (
     <DatabaseContext.Provider
       value={{
@@ -217,6 +252,9 @@ export default function DatabaseContextPRovider({ children }) {
         getSingleFieldFromDatabase,
         getTheProfileDocument,
         updateFollowerFollowing,
+        toGetAllBlogs,
+        likeReviewsWIthPosts,
+        getReviews,
       }}
     >
       {children}

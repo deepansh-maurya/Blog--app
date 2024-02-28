@@ -15,9 +15,11 @@ import Write from "./pages/write/index.jsx";
 import ProfileSection from "./pages/profile/index.jsx";
 import Explore from "./pages/explore/index.jsx";
 import Layer from "./Layer.jsx";
+import BlogPost from "./components/BlogPost.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="/blogpost" element={<BlogPost />} />
       <Route path="/layer" element={<Layer />} />
       <Route path="/myfeed" element={<Myfeed />} />
       <Route path="/login" element={<Login />} />

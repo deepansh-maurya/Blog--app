@@ -5,7 +5,7 @@ import UserSettings from "./UserSettings";
 import Profile from "./Profile";
 import { useAuth } from "../../appwriteBackend/authentication/auth";
 export default function ProfileSection() {
-  const [state, setstate] = useState("setting");
+  const [state, setstate] = useState("profile");
   const { logOut } = useAuth();
   async function Logout() {
     console.log("Aa agaya ");
