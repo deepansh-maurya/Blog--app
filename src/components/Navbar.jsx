@@ -4,6 +4,7 @@ import { useAuth } from "../appwriteBackend/authentication/auth";
 import { useBlog } from "../global/blogcontext";
 export default function Navbar() {
   const { username, setusername } = useBlog();
+  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
   const { logOut } = useAuth();
   async function Logout() {
     await logOut();
