@@ -44,20 +44,13 @@ export default function Profile() {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
-      {/* Profile Pic */}
       <img
         src={profileData.profilePic}
         alt="Profile Pic"
         className="w-20 h-20 rounded-full mx-auto mb-4"
       />
-
-      {/* Username */}
       <h1 className="text-2xl font-bold mb-2">{profileData.username}</h1>
-
-      {/* Tagline */}
       <p className="text-gray-600 mb-4">{profileData.tagline}</p>
-
-      {/* Followers and Following */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="font-semibold">{profileData.followers}</p>
@@ -68,9 +61,7 @@ export default function Profile() {
           <p className="text-gray-600 text-sm">Following</p>
         </div>
       </div>
-
-      {/* Top Five Blogs */}
-      <h2 className="text-lg font-semibold mb-2">Top Five Blogs</h2>
+      <h2 className="text-lg font-semibold mb-2">Your Top Writes</h2>
       <ul className="list-disc pl-6">
         {profileData.topFiveBlogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>

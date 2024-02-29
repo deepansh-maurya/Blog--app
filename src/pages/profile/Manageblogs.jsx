@@ -10,7 +10,7 @@ export default function Manageblogs() {
     setblogs(response.documents);
   }
   useEffect(() => {
-    console.log(blogs);
+    // console.log(blogs);
   }, [blogs]);
   useEffect(() => {
     getBLogs();

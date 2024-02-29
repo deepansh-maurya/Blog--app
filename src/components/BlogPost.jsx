@@ -1,48 +1,71 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Await, useLocation } from "react-router-dom";
 import { useDatabse } from "../appwriteBackend/database/databse";
 import { useBlog } from "../global/blogcontext";
 import conf from "../conf/conf";
 import BlogCard from "./BlogCard";
 export default function BlogPost() {
   const { username } = useBlog();
+  const [likes, setlikes] = useState("");
   const [allblogs, setallblogs] = useState();
-  console.log(allblogs, "allblogs");
   const post = useLocation();
-  const { getTheProfileDocument, toGetAllBlogs, getReviews } = useDatabse();
+  const {
+    getTheProfileDocument,
+    toGetAllBlogs,
+    getReviews,
+    updateLikes,
+    updateComments,
+  } = useDatabse();
   const data = post.state.props;
   const [cred, setcred] = useState();
-  console.log(data);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState(["Comment 1", "Comment 2"]);
+  const [comments, setComments] = useState([]);
   async function getBloggerName() {
     const res = await getTheProfileDocument(username, conf.profile_id);
-    console.log(res);
     setcred(res);
   }
   async function getReviewsOfBLogs() {
     try {
-      const promise = await getReviews(data.slugs);
-      console.log(promise);
+      const promise = await getReviews(data.slug);
+      if (promise.comments[0] != null) setComments(promise.comments);
+      setlikes(promise.likes);
+      console.log(promise, "comments");
     } catch (error) {
       return error;
     }
+  }
+  async function updatelikesofBlog() {
+    const promise = await getReviews(data.slug);
+    if (promise.likedby != username) {
+      let like = Number(likes);
+      like++;
+      setlikes(like);
+      const promise = await updateLikes(data.slug, String(like), username);
+      console.log(promise);
+    }
+  }
+  async function updateCommentsofBlog() {
+    const review = comments;
+    review.push(comment);
+    setComments(review);
+    console.log(comments);
+    const promise = await updateComments(data.slug, review);
+    console.log(promise);
+    setComment("");
+    getReviewsOfBLogs();
   }
   async function getBlogs() {
     const promise = await toGetAllBlogs();
     setallblogs(promise.documents);
   }
+
   useEffect(() => {
     getBloggerName();
     getBlogs();
+    getReviewsOfBLogs();
   }, []);
-  const handleAddComment = () => {
-    if (comment.trim() !== "") {
-      setComments((prevComments) => [...prevComments, comment]);
-      setComment("");
-    }
-  };
+
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-md shadow-md my-8">
       {/* Blog Header */}
@@ -71,9 +94,13 @@ export default function BlogPost() {
         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue">
           Follow
         </button>
-        <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 focus:outline-none focus:shadow-outline-gray">
+        <button
+          onClick={updatelikesofBlog}
+          className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 focus:outline-none focus:shadow-outline-gray"
+        >
           Like
         </button>
+        <div>{likes}</div>
       </div>
 
       {/* Blog Content */}
@@ -83,11 +110,12 @@ export default function BlogPost() {
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2">Comments</h3>
         <ul>
-          {comments.map((comment, index) => (
-            <li key={index} className="text-gray-600 mb-2">
-              {comment}
-            </li>
-          ))}
+          {comments &&
+            comments.map((comment, index) => (
+              <li key={index} className="text-gray-600 mb-2">
+                {comment}
+              </li>
+            ))}
         </ul>
         <div className="mt-4">
           <textarea
@@ -97,7 +125,7 @@ export default function BlogPost() {
             className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
           ></textarea>
           <button
-            onClick={handleAddComment}
+            onClick={updateCommentsofBlog}
             className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
           >
             Add Comment

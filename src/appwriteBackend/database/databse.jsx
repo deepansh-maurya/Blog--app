@@ -229,11 +229,46 @@ export default function DatabaseContextPRovider({ children }) {
   }
   async function getReviews(slug) {
     try {
-      const promise = await getDocument(
+      const promise = await databases.getDocument(
         conf.databse_id,
-        conf.likeReviewsWIthPosts,
+        conf.reviewsCollection,
         slug
       );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
+  async function updateComments(slug, comments) {
+    // console.log(slug, comments);
+    try {
+      const promise = await databases.updateDocument(
+        conf.databse_id,
+        conf.reviewsCollection,
+        slug,
+        {
+          comments,
+        }
+      );
+      console.log(promise);
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
+  async function updateLikes(slug, likes, likedby) {
+    // console.log(slug, comments);
+    try {
+      const promise = await databases.updateDocument(
+        conf.databse_id,
+        conf.reviewsCollection,
+        slug,
+        {
+          likes,
+          likedby,
+        }
+      );
+      console.log(promise);
       if (promise) return promise;
     } catch (error) {
       return error;
@@ -255,6 +290,8 @@ export default function DatabaseContextPRovider({ children }) {
         toGetAllBlogs,
         likeReviewsWIthPosts,
         getReviews,
+        updateComments,
+        updateLikes,
       }}
     >
       {children}

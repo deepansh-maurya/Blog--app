@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDatabse } from "../../appwriteBackend/database/databse";
 import { useStorage } from "../../appwriteBackend/storage/storage";
 import { useBlog } from "../../global/blogcontext";
+import parse from "html-react-parser";
 export default function Write() {
   const { username } = useBlog();
   const [formData, setFormData] = useState({
@@ -43,19 +44,27 @@ export default function Write() {
   };
 
   const handleSubmit = async () => {
+    const dataToSent = formData;
     console.log("file", file);
     const date = new Date();
-
+    const content = parse(formData.content);
+    console.log(content.props.children);
     // const imageid = await createPostImage(file);
-    setFormData((prevData) => ({
-      ...prevData,
-      image: "imageid",
-      date: date,
-    }));
-    const promise = await likeReviewsWIthPosts(formData.slug);
-    console.log(promise);
-    const res = await createPost(username, formData);
-    console.log(res);
+    dataToSent.date = date;
+    dataToSent.content = content.props.children;
+    console.log(dataToSent);
+    const promise = await likeReviewsWIthPosts(dataToSent.slug);
+    const res = await createPost(username, dataToSent);
+    setFormData({
+      title: "",
+      content: "",
+      category: "",
+      tags: "",
+      image: "",
+      date: "",
+      status: "",
+      slug: "",
+    });
   };
 
   return (
