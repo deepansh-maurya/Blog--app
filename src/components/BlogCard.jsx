@@ -73,7 +73,7 @@ export default function BlogCard({ props }) {
         <div className="flex justify-between items-center text-xs text-gray-500">
           <div className="flex items-center">
             <span className="mr-2">Likes: {likes}</span>
-            <span>Comments: {comments.length + 1}</span>
+            <span>Comments: {comments && comments.length + 1}</span>
           </div>
           <span>{props.category}</span>
         </div>

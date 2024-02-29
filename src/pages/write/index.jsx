@@ -10,7 +10,7 @@ export default function Write() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    category: "",
+    category: "technology",
     tags: "",
     image: "",
     date: "",
@@ -49,9 +49,12 @@ export default function Write() {
     const date = new Date();
     const content = parse(formData.content);
     console.log(content.props.children);
+    const tags = formData.tags.split(" ");
+    console.log(tags);
     // const imageid = await createPostImage(file);
     dataToSent.date = date;
     dataToSent.content = content.props.children;
+    dataToSent.tags = tags;
     console.log(dataToSent);
     const promise = await likeReviewsWIthPosts(dataToSent.slug);
     const res = await createPost(username, dataToSent);
