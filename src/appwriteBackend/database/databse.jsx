@@ -5,7 +5,7 @@ import { useBlog } from "../../global/blogcontext";
 const DatabaseContext = createContext();
 const client = new Client().setEndpoint(conf.url).setProject(conf.project_id);
 
-const databases = new Databases(client);
+export const databases = new Databases(client);
 
 export default function DatabaseContextPRovider({ children }) {
   const { username } = useBlog();
@@ -66,7 +66,7 @@ export default function DatabaseContextPRovider({ children }) {
       const promise = await databases.listDocuments(
         conf.databse_id,
         conf.article_id,
-        [Query.equal("status", "active")]
+        [Query.equal("status", true)]
       );
       if (promise) return promise;
     } catch (error) {
@@ -274,6 +274,21 @@ export default function DatabaseContextPRovider({ children }) {
       return error;
     }
   }
+
+  // get blogs for the feed
+
+  async function toGetBLogsForFeed(username) {
+    try {
+      const promise = await databases.listDocuments(
+        conf.databse_id,
+        conf.article_id,
+        [Query.equal("username", username)]
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
   return (
     <DatabaseContext.Provider
       value={{
@@ -292,6 +307,7 @@ export default function DatabaseContextPRovider({ children }) {
         getReviews,
         updateComments,
         updateLikes,
+        toGetBLogsForFeed,
       }}
     >
       {children}
