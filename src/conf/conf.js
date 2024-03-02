@@ -7,5 +7,6 @@ const conf = {
   bucket_id: String("65d9ddb56f7eb527dd0d"),
   linkedWithProfile: String("65dca4657d8b60948124"),
   reviewsCollection: String("65df373b01701ed48696"),
+  draftcollection_id: String("65e219e536e022774bad"),
 };
 export default conf;

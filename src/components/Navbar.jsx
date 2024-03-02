@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../appwriteBackend/authentication/auth";
 import { useBlog } from "../global/blogcontext";
 export default function Navbar() {
   const { username, setusername } = useBlog();
-  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+  const navigate = useNavigate();
   const { logOut } = useAuth();
   async function Logout() {
     await logOut();
@@ -15,7 +15,14 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         {username != "" ? (
           <div className="container mx-auto flex justify-between items-center">
-            <div className="text-white text-lg font-bold">My Blog</div>
+            <div
+              onClick={() => {
+                navigate("/myfeed");
+              }}
+              className="text-white text-lg font-bold"
+            >
+              My Blog
+            </div>
 
             <div className="space-x-4">
               <input

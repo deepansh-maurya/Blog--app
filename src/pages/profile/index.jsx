@@ -4,6 +4,7 @@ import { Account } from "./Account";
 import UserSettings from "./UserSettings";
 import Profile from "./Profile";
 import { useAuth } from "../../appwriteBackend/authentication/auth";
+import Draft from "./Draft";
 export default function ProfileSection() {
   const [state, setstate] = useState("profile");
   const { logOut } = useAuth();
@@ -51,6 +52,14 @@ export default function ProfileSection() {
           Account
         </div>
         <div
+          className={`cursor-pointer py-2 ${
+            state === "draft" && "bg-gray-600"
+          }`}
+          onClick={() => setstate("draft")}
+        >
+          Draft
+        </div>
+        <div
           className="cursor-pointer py-2"
           onClick={() => {
             Logout();
@@ -65,6 +74,7 @@ export default function ProfileSection() {
         {state === "setting" && <UserSettings />}
         {state === "account" && <Account />}
         {state === "manageblogs" && <Manageblogs />}
+        {state === "draft" && <Draft />}
       </div>
     </div>
   );

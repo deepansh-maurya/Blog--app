@@ -18,9 +18,11 @@ import Layer from "./Layer.jsx";
 import BlogPost from "./components/BlogPost.jsx";
 import FeedBlogPost from "./components/FeedBlogPost.jsx";
 import EditBlog from "./components/EditBlog.jsx";
+import EditDraftBLog from "./pages/profile/EditDraftBLog.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="editdraftblog" element={<EditDraftBLog />} />
       <Route path="/editblog" element={<EditBlog />} />
       <Route path="/feedblogpost" element={<FeedBlogPost />} />
       <Route path="/blogpost" element={<BlogPost />} />

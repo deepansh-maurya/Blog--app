@@ -22,10 +22,7 @@ export default function Profile() {
   async function getTheCred() {
     console.log(username, "usernamw");
     const cred = await getTheProfileDocument(username, conf.profile_id);
-    const cred2 = await getTheProfileDocument(
-      "useruser",
-      conf.linkedWithProfile
-    );
+    const cred2 = await getTheProfileDocument(username, conf.linkedWithProfile);
     setprofiledata((prev) => ({
       ...prev,
       profilePic: cred.image,

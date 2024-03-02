@@ -26,22 +26,16 @@ export default function DatabaseContextPRovider({ children }) {
       return error;
     }
   }
-  async function updatePost({
-    title,
-    content,
-    category,
-    tags,
-    image,
-    date,
-    status,
-    slug,
-  }) {
+  async function updatePost(
+    username,
+    { title, content, category, tags, image, date, status, slug }
+  ) {
     try {
       const promise = await databases.updateDocument(
         conf.databse_id,
         conf.article_id,
         slug,
-        { title, content, category, tags, image, date, status, slug }
+        { title, content, category, tags, image, date, status, slug, username }
       );
       if (promise) return true;
     } catch (error) {
@@ -87,6 +81,38 @@ export default function DatabaseContextPRovider({ children }) {
     }
   }
   /////
+
+  // functions for draft
+
+  async function toCreateDraft(
+    username,
+    { title, content, category, tags, image, date, status, slug }
+  ) {
+    try {
+      const promise = await databases.createDocument(
+        conf.databse_id,
+        conf.draftcollection_id,
+        slug,
+        { title, content, category, tags, image, date, status, slug, username }
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
+  // to delete draft
+  async function toDelteDRaft(slug) {
+    try {
+      const promise = await databases.deleteDocument(
+        conf.databse_id,
+        conf.draftcollection_id,
+        slug
+      );
+      if (promise) return promise;
+    } catch (error) {
+      return error;
+    }
+  }
 
   // functions for handling the profile component
   //funtions to get single field from database
@@ -308,6 +334,8 @@ export default function DatabaseContextPRovider({ children }) {
         updateComments,
         updateLikes,
         toGetBLogsForFeed,
+        toCreateDraft,
+        toDelteDRaft,
       }}
     >
       {children}

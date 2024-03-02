@@ -1,57 +1,65 @@
 import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import parse from "html-react-parser";
+import { useBlog } from "../global/blogcontext";
+import { useDatabse } from "../appwriteBackend/database/databse";
 export default function EditBlog() {
+  const navigate = useNavigate();
+  const { updatePost } = useDatabse();
+  const { username } = useBlog();
   const post = useLocation();
   const data = post.state.props;
   const [postdata, setpostdata] = useState({
     title: data.title,
     image: data.image,
     category: data.category,
-    tags: data.tags,
+    tags: data.tags.join(" "),
     slug: data.slug,
     status: data.status,
     content: data.content,
   });
+  console.log(postdata);
   const [file, setfile] = useState(null);
-  console.log(post);
+  // console.log(post);
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
-    setFormData((prevData) => ({
+    setpostdata((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (name == "title") {
-      let val = event.target.value;
-      let slug = "";
-      for (let i = 0; i < val.length; i++) {
-        if (val[i] == " ") {
-          slug = slug + "-";
-        } else {
-          slug = slug + val[i];
-        }
-      }
-      setFormData((prevData) => ({
-        ...prevData,
-        slug: slug,
-      }));
-    }
+    // if (name == "title") {
+    //   let val = event.target.value;
+    //   let slug = "";
+    //   for (let i = 0; i < val.length; i++) {
+    //     if (val[i] == " ") {
+    //       slug = slug + "-";
+    //     } else {
+    //       slug = slug + val[i];
+    //     }
+    //   }
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     slug: slug,
+    //   }));
+    // }
   }
   const handleSubmit = async () => {
-    const dataToSent = formData;
-    console.log("file", file);
+    const dataToSent = postdata;
+    // console.log("file", file);
     const date = new Date();
-    const content = parse(formData.content);
+    const content = parse(postdata.content);
     console.log(content.props.children);
-    const tags = formData.tags.split(" ");
+    const tags = postdata.tags.split(" ");
     console.log(tags);
     // const imageid = await createPostImage(file);
     dataToSent.date = date;
     dataToSent.content = content.props.children;
     dataToSent.tags = tags;
     console.log(dataToSent);
-    const promise = await likeReviewsWIthPosts(dataToSent.slug);
-    const res = await createPost(username, dataToSent);
+    // const promise = await likeReviewsWIthPosts(dataToSent.slug);
+    const res = await updatePost(username, dataToSent);
+    navigate("/profile");
   };
   return (
     <div className="max-w-3xl mx-auto p-4 bg-gray-100 rounded shadow mt-4">
@@ -61,7 +69,7 @@ export default function EditBlog() {
           type="text"
           name="title"
           value={postdata.title}
-          //   onChange={handleChange}
+          onChange={handleChange}
           className="w-full border rounded py-2 px-3"
         />
       </div>
@@ -80,13 +88,12 @@ export default function EditBlog() {
         <select
           name="category"
           value={postdata.category}
-          //   onChange={handleChange}
+          onChange={handleChange}
           className="w-full border rounded py-2 px-3"
         >
           <option value="technology">Technology</option>
           <option value="science">Science</option>
           <option value="art">Art</option>
-          {/* Add more categories as needed */}
         </select>
       </div>
       <div className="mb-4">
@@ -95,7 +102,7 @@ export default function EditBlog() {
           type="text"
           name="tags"
           value={postdata.tags}
-          //   onChange={handleChange}
+          onChange={handleChange}
           className="w-full border rounded py-2 px-3"
         />
       </div>
@@ -116,7 +123,7 @@ export default function EditBlog() {
           type="checkbox"
           name="status"
           checked={postdata.status}
-          //   onChange={handleChange}
+          onChange={handleChange}
           className="mr-2"
         />
         <span className="text-gray-700">Is Active</span>
@@ -157,13 +164,13 @@ export default function EditBlog() {
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}
-          //   onEditorChange={(content) =>
-          //     setFormData((prevData) => ({ ...prevData, content }))
-          //   }
+          onEditorChange={(content) =>
+            setpostdata((prevData) => ({ ...prevData, content }))
+          }
         />
       </div>
       <button
-        // onClick={handleSubmit}
+        onClick={handleSubmit}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
       >
         Submit
