@@ -14,11 +14,20 @@ export default function GlobalBlogContextProvider({ children }) {
     status: "",
     slug: "",
   });
+  const [search, setsearch] = useState();
+  console.log(search);
   console.log(formData);
   console.log(username);
   return (
     <GLobalBlogContext.Provider
-      value={{ username, setusername, formData, setFormData }}
+      value={{
+        username,
+        setusername,
+        formData,
+        setFormData,
+        search,
+        setsearch,
+      }}
     >
       {children}
     </GLobalBlogContext.Provider>

@@ -5,7 +5,10 @@ import { databases, useDatabse } from "../../appwriteBackend/database/databse";
 import FeedBLogCard from "../../components/FeedBlogCard";
 import conf from "../../conf/conf";
 import { useBlog } from "../../global/blogcontext";
+import { useNavigate } from "react-router-dom";
 export default function MyFeed() {
+  const navigate = useNavigate();
+  const [draftlength, setdraftlength] = useState(0);
   const { username } = useBlog();
   const [blogs, setblogs] = useState();
   const { getPosts } = useDatabse();
@@ -14,6 +17,18 @@ export default function MyFeed() {
     setblogs(promise.documents);
     console.log(promise);
   }
+
+  async function totaldrafts() {
+    const promise = await databases.listDocuments(
+      conf.databse_id,
+      conf.draftcollection_id
+    );
+    if (promise) setdraftlength(promise.documents.length);
+    console.log(draftlength);
+  }
+  useEffect(() => {
+    totaldrafts();
+  }, []);
   async function getFollowedBlogs() {
     const promise = await databases.getDocument(
       conf.databse_id,
@@ -67,7 +82,17 @@ export default function MyFeed() {
       </div>
 
       <div className="w-1/4 p-4">
-        <div className="mb-4 text-blue-500 cursor-pointer">Draft</div>
+        <div className="mb-4 text-blue-500 cursor-pointer">
+          Draft
+          <div
+            onClick={() => {
+              navigate("/profile");
+            }}
+          >
+            see all
+          </div>
+          <div>Your pending Drafts : {draftlength}</div>
+        </div>
         <div className="text-blue-500 cursor-pointer">Trending</div>
       </div>
     </div>

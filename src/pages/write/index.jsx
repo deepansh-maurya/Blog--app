@@ -52,7 +52,7 @@ export default function Write() {
     const dataToSent = formData;
     console.log(dataToSent, formData, "data to sent");
     const date = new Date();
-    const content = "";
+    let content = "";
     if (formData.content != "") {
       content = parse(formData.content);
     }

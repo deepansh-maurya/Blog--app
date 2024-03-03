@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../appwriteBackend/authentication/auth";
 import { useBlog } from "../global/blogcontext";
 export default function Navbar() {
+  const { search, setsearch } = useBlog();
   const { username, setusername } = useBlog();
   const navigate = useNavigate();
   const { logOut } = useAuth();
@@ -27,9 +28,14 @@ export default function Navbar() {
             <div className="space-x-4">
               <input
                 type="text"
-                placeholder="Search"
+                placeholder=" search any keyword "
                 className="px-3 py-1 rounded-md border-none focus:outline-none focus:ring focus:border-blue-300"
+                value={search}
+                onChange={(e) => {
+                  setsearch(e.target.value);
+                }}
               />
+              <Link to="/search-results">S</Link>
               <Link to="myfeed" className="text-white hover:text-gray-300">
                 My Feed
               </Link>
