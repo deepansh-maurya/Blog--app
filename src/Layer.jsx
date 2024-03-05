@@ -22,9 +22,8 @@ function Layer() {
     validateUser();
   }, []);
   return (
-    <div>
+    <div className="  w-[100%]">
       {validate ? <Navbar /> : null}
-      {/* <Navbar /> */}
       <Outlet />
     </div>
   );

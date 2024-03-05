@@ -8,14 +8,17 @@ import { databases } from "../appwriteBackend/database/databse";
 import { Query } from "appwrite";
 import FeedBLogCard from "./FeedBlogCard";
 import { useBlog } from "../global/blogcontext";
+import { useStorage } from "../appwriteBackend/storage/storage";
 export default function FeedBlogPost() {
+  const { createPostImage, imagePreview } = useStorage();
+
   const [follower, setfollower] = useState("follow");
   const { username } = useBlog();
   const [likes, setlikes] = useState("");
   const [allblogs, setallblogs] = useState();
   const post = useLocation();
   const data = post.state.props;
-  console.log(data);
+  console.log(data, "ytttttttttttttttttttt");
   const {
     getTheProfileDocument,
     getReviews,
@@ -24,11 +27,19 @@ export default function FeedBlogPost() {
     toGetBLogsForFeed,
   } = useDatabse();
   const [cred, setcred] = useState();
-  console.log(cred);
+  // console.log(cred);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [blogimage, setblogimage] = useState();
+  async function getImage() {
+    const promise = await imagePreview(data.image);
+    setblogimage(promise.href);
+  }
+  const [profile, setprofile] = useState();
   async function getBloggerName() {
     const res = await getTheProfileDocument(data.username, conf.profile_id);
+    const promise = await imagePreview(res.image);
+    setprofile(promise.href);
     setcred(res);
   }
   async function getReviewsOfBLogs() {
@@ -128,6 +139,7 @@ export default function FeedBlogPost() {
     getBloggerName();
     getBlogs();
     getReviewsOfBLogs();
+    getImage();
   }, []);
 
   return (
@@ -135,7 +147,7 @@ export default function FeedBlogPost() {
       {/* Blog Header */}
       <div className="flex items-center mb-4">
         <img
-          src="blog_picture.jpg"
+          src={blogimage}
           alt="Blog Post"
           className="w-16 h-16 rounded-full mr-4"
         />
@@ -143,7 +155,7 @@ export default function FeedBlogPost() {
           <h2 className="text-xl font-bold">{data.title}</h2>
           <div className="flex items-center text-gray-600">
             <img
-              src="blogger_image.jpg" // Replace with the URL of the blogger's image
+              src={profile} // Replace with the URL of the blogger's image
               alt="Blogger"
               className="w-8 h-8 rounded-full mr-2"
             />
@@ -204,11 +216,9 @@ export default function FeedBlogPost() {
       <div>
         <h3 className="text-lg font-semibold mb-2">More Articles</h3>
         {allblogs &&
-          allblogs.map((item, index) => {
-            if (index < 3) {
-              return <FeedBLogCard key={index} props={item} />;
-            }
-          })}
+          allblogs
+            .slice(0, 3)
+            .map((item, index) => <FeedBLogCard key={index} props={item} />)}
       </div>
     </div>
   );

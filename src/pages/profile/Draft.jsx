@@ -22,7 +22,7 @@ export default function Draft() {
     getDrafts();
   }, []);
   return (
-    <div>
+    <div className="text-white">
       <h1 className="text-3xl font-bold mb-6 text-center">Your Drafts</h1>
 
       {drafts &&

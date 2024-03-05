@@ -5,11 +5,9 @@ import { useDatabse } from "../appwriteBackend/database/databse";
 import { useBlog } from "../global/blogcontext";
 import conf from "../conf/conf";
 import BlogCard from "./BlogCard";
+import { useStorage } from "../appwriteBackend/storage/storage";
 export default function BlogPost() {
-  const { username } = useBlog();
-  const [likes, setlikes] = useState("");
-  const [allblogs, setallblogs] = useState();
-  const post = useLocation();
+  const { createPostImage, imagePreview } = useStorage();
   const {
     getTheProfileDocument,
     toGetAllBlogs,
@@ -17,6 +15,21 @@ export default function BlogPost() {
     updateLikes,
     updateComments,
   } = useDatabse();
+  const { username } = useBlog();
+  const [likes, setlikes] = useState("");
+  const [allblogs, setallblogs] = useState();
+  const [blogimage, setblogimage] = useState();
+  const [profile, setprofile] = useState();
+  const post = useLocation();
+  console.log(post);
+  async function getImage() {
+    const promise = await imagePreview(post.state.props.image);
+    const response = await getTheProfileDocument(username, conf.profile_id);
+    const promise1 = await imagePreview(response.image);
+    setprofile(promise1.href);
+    setblogimage(promise.href);
+  }
+
   const data = post.state.props;
   const [cred, setcred] = useState();
   const [comment, setComment] = useState("");
@@ -64,6 +77,7 @@ export default function BlogPost() {
     getBloggerName();
     getBlogs();
     getReviewsOfBLogs();
+    getImage();
   }, []);
 
   return (
@@ -71,7 +85,7 @@ export default function BlogPost() {
       {/* Blog Header */}
       <div className="flex items-center mb-4">
         <img
-          src="blog_picture.jpg"
+          src={blogimage}
           alt="Blog Post"
           className="w-16 h-16 rounded-full mr-4"
         />
@@ -79,7 +93,7 @@ export default function BlogPost() {
           <h2 className="text-xl font-bold">{data.title}</h2>
           <div className="flex items-center text-gray-600">
             <img
-              src="blogger_image.jpg" // Replace with the URL of the blogger's image
+              src={profile} // Replace with the URL of the blogger's image
               alt="Blogger"
               className="w-8 h-8 rounded-full mr-2"
             />

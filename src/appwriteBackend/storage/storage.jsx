@@ -17,7 +17,7 @@ export default function StorageContextProvider({ children }) {
       );
       if (promise) return promise;
     } catch (error) {
-      return false;
+      return error;
     }
   }
 

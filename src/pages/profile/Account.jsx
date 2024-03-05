@@ -15,13 +15,13 @@ export function Account() {
     }
   }
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
+    <div className="max-w-md mx-auto p-6 bg-gray-800 text-white rounded-md shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center text-red-500">
         Request Delete
       </h2>
       <p className="mb-4 text-center">
         To delete your account, please type{" "}
-        <strong className="text-red-500">DELETE</strong> below:
+        <strong className="text-red-500">Username</strong> below:
       </p>
       {flag ? (
         <input
@@ -29,7 +29,7 @@ export function Account() {
           value={confirmation}
           readOnly
           placeholder="Type username to Authenticate"
-          className="w-full border rounded py-2 px-3 mb-4 focus:outline-none focus:border-blue-500"
+          className="w-full border rounded py-2 px-3 mb-4 bg-gray-700 text-white focus:outline-none focus:border-blue-500"
         />
       ) : (
         <input
@@ -37,7 +37,7 @@ export function Account() {
           value={confirmation}
           onChange={(e) => setconfirmation(e.target.value)}
           placeholder="Type username to Authenticate"
-          className="w-full border rounded py-2 px-3 mb-4 focus:outline-none focus:border-blue-500"
+          className="w-full border rounded py-2 px-3 mb-4 bg-gray-700 text-white focus:outline-none focus:border-blue-500"
         />
       )}
       <button

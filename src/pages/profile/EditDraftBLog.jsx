@@ -78,8 +78,9 @@ export default function EditDraftBLog() {
           className="w-full border rounded py-2 px-3"
         />
       </div>
+
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Image URL:</label>
+        <label className="block text-gray-700 font-bold mb-2">Image:</label>
         <input
           type="file"
           accept="image/*"
@@ -88,6 +89,7 @@ export default function EditDraftBLog() {
           className="w-full border rounded py-2 px-3"
         />
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Category:</label>
         <select
@@ -101,6 +103,7 @@ export default function EditDraftBLog() {
           <option value="art">Art</option>
         </select>
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Tags:</label>
         <input
@@ -111,6 +114,7 @@ export default function EditDraftBLog() {
           className="w-full border rounded py-2 px-3"
         />
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Slug:</label>
         <input
@@ -118,10 +122,10 @@ export default function EditDraftBLog() {
           name="slug"
           value={postdata.slug}
           readOnly
-          // onChange={handleChange}
           className="w-full border rounded py-2 px-3"
         />
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Active:</label>
         <input
@@ -133,47 +137,23 @@ export default function EditDraftBLog() {
         />
         <span className="text-gray-700">Is Active</span>
       </div>
+
       <div className="mb-4">
         <label className="block text-gray-700 font-bold mb-2">Content:</label>
         <Editor
-          apiKey="6cbx0irs9jtviit23c1e9dak2ktwvfchhyzuwpkps6pqyhpq"
+          apiKey="your-api-key"
           initialValue={postdata.content}
-          init={{
-            height: 500,
-            menubar: false,
-            plugins: [
-              "advlist",
-              "autolink",
-              "lists",
-              "link",
-              "image",
-              "charmap",
-              "preview",
-              "anchor",
-              "searchreplace",
-              "visualblocks",
-              "code",
-              "fullscreen",
-              "insertdatetime",
-              "media",
-              "table",
-              "code",
-              "help",
-              "wordcount",
-            ],
-            toolbar:
-              "undo redo | blocks | " +
-              "bold italic forecolor | alignleft aligncenter " +
-              "alignright alignjustify | bullist numlist outdent indent | " +
-              "removeformat | help",
-            content_style:
-              "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-          }}
+          init={
+            {
+              // your existing configuration
+            }
+          }
           onEditorChange={(content) =>
             setpostdata((prevData) => ({ ...prevData, content }))
           }
         />
       </div>
+
       <button
         onClick={handleSubmit}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"

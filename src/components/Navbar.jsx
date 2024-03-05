@@ -12,49 +12,50 @@ export default function Navbar() {
     setusername("");
   }
   return (
-    <nav className="bg-gradient-to-r from-pink-500 to-purple-500 p-4 ">
-      <div className="container mx-auto flex justify-between items-center">
-        {username != "" ? (
-          <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+      <div className="container mx-auto flex items-center justify-evenly ">
+        {username !== "" && (
+          <div className="flex items-center justify-between space-x-4">
             <div
-              onClick={() => {
-                navigate("/myfeed");
-              }}
-              className="text-white text-lg font-bold"
+              onClick={() => navigate("/myfeed")}
+              className="text-white text-lg mx-5  font-bold cursor-pointer"
             >
               My Blog
             </div>
-
-            <div className="space-x-4">
-              <input
-                type="text"
-                placeholder=" search any keyword "
-                className="px-3 py-1 rounded-md border-none focus:outline-none focus:ring focus:border-blue-300"
-                value={search}
-                onChange={(e) => {
-                  setsearch(e.target.value);
-                }}
-              />
-              <Link to="/search-results">S</Link>
-              <Link to="myfeed" className="text-white hover:text-gray-300">
-                My Feed
-              </Link>
-              <Link to="write" className="text-white hover:text-gray-300">
-                Write
-              </Link>
-              <Link to="/profile" className="text-white hover:text-gray-300">
-                Profile
-              </Link>
-              <Link
-                onClick={() => Logout()}
-                to=""
-                className="text-white hover:text-gray-300"
-              >
-                Logout
-              </Link>
-            </div>
+            <input
+              type="text"
+              placeholder="Search any keyword"
+              className="px-3 mx-5  py-1 rounded-md border-none focus:outline-none focus:ring focus:border-blue-300"
+              value={search}
+              onChange={(e) => setsearch(e.target.value)}
+            />
+            <Link
+              to="/search-results"
+              className="text-white mx-5  hover:text-gray-300"
+            >
+              S
+            </Link>
+            <Link to="/myfeed" className="text-white mx-5  hover:text-gray-300">
+              My Feed
+            </Link>
+            <Link to="/write" className="text-white mx-5  hover:text-gray-300">
+              Write
+            </Link>
+            <Link
+              to="/profile"
+              className="text-white mx-5  hover:text-gray-300"
+            >
+              Profile
+            </Link>
+            <Link
+              onClick={() => Logout()}
+              to=""
+              className="text-white mx-5 hover:text-gray-300"
+            >
+              Logout
+            </Link>
           </div>
-        ) : null}
+        )}
       </div>
     </nav>
   );

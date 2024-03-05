@@ -8,7 +8,7 @@ export default function UserSettings() {
   const { getTheProfileDocument } = useDatabse();
 
   const { setOtherProfileCred } = useDatabse();
-  const { createPostImage } = useStorage();
+  const { createPostImage, imagePreview } = useStorage();
   const [settings, setSettings] = useState({
     fullname: "",
     tagline: "",
@@ -23,6 +23,8 @@ export default function UserSettings() {
     username: "",
     website: "",
   });
+  const [file, setfile] = useState(null);
+
   async function getCred() {
     const promise = await getTheProfileDocument(username, conf.profile_id);
     if (promise != undefined) {
@@ -41,28 +43,33 @@ export default function UserSettings() {
         website: promise.website,
       });
     }
-    console.log(promise);
+    const promise2 = await imagePreview(promise.image);
+    setfile(promise2.href);
+    console.log(promise2);
+    // console.log(promise);
   }
   useEffect(() => {
-    console.log(settings);
+    // console.log(settings);
   }, [settings]);
   useEffect(() => {
     getCred();
   }, []);
-  const [file, setfile] = useState(null);
   const handleUpdate = async () => {
-    // const imageid = await createPostImage(file);
-    // setSettings((prev) => ({ ...prev, image: imageid }));
+    console.log(file);
+    const imageid = await createPostImage(file);
+    setSettings((prev) => ({ ...prev, image: imageid.$id }));
     const promise = await setOtherProfileCred(username, settings);
     console.log(promise);
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md">
-      <h1 className="text-2xl font-bold mb-4">User Settings</h1>
+    <div className="max-w-md mx-auto p-6 bg-gray-800 rounded-md shadow-md">
+      <h1 className="text-2xl font-bold mb-4 text-white">User Settings</h1>
 
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Basic Information</h2>
+      <section className="mb-6 text-black ">
+        <h2 className="text-lg font-semibold mb-2 text-white">
+          Basic Information
+        </h2>
         <div className="mb-3">
           <label className="block text-gray-600 text-sm font-semibold mb-1">
             Full Name
@@ -90,14 +97,32 @@ export default function UserSettings() {
           />
         </div>
         <div className="mb-3">
-          <label className="block text-gray-600 text-sm font-semibold mb-1">
-            photo
-          </label>
-          <input
-            type="file"
-            onChange={(e) => setfile(e.target.files[0])}
-            className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
-          />
+          {file == "" ? (
+            <div>
+              {" "}
+              <label className="block text-gray-600 text-sm font-semibold mb-1">
+                photo
+              </label>
+              <input
+                type="file"
+                onChange={(e) => setfile(e.target.files[0])}
+                className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          ) : (
+            <div>
+              <img src={file} alt="" />
+
+              <label className="block text-gray-600 text-sm font-semibold mb-1">
+                photo
+              </label>
+              <input
+                type="file"
+                onChange={(e) => setfile(e.target.files[0])}
+                className="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          )}
         </div>
         <div className="mb-3">
           <label className="block text-gray-600 text-sm font-semibold mb-1">
@@ -131,8 +156,8 @@ export default function UserSettings() {
       </section>
 
       {/* Social Section */}
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Social</h2>
+      <section className="mb-6 text-black ">
+        <h2 className="text-lg font-semibold mb-2 text-white">Social</h2>
         <div className="mb-3">
           <label className="block text-gray-600 text-sm font-semibold mb-1">
             Twitter Link
@@ -202,8 +227,10 @@ export default function UserSettings() {
       </section>
 
       {/* Profile Identity Section */}
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Profile Identity</h2>
+      <section className="mb-6 text-black ">
+        <h2 className="text-lg font-semibold mb-2 text-white">
+          Profile Identity
+        </h2>
         <div className="mb-3">
           <label className="block text-gray-600 text-sm font-semibold mb-1">
             Username

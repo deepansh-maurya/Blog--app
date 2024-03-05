@@ -81,8 +81,9 @@ export default function Write() {
     const date = new Date();
     const content = parse(formData.content);
     const tags = formData.tags.split(" ");
-    // const imageid = await createPostImage(file);
+    const imageid = await createPostImage(file);
     dataToSent.date = date;
+    dataToSent.image = imageid.$id;
     dataToSent.content = content.props.children;
     dataToSent.tags = tags;
     console.log(dataToSent);

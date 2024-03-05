@@ -55,21 +55,24 @@ export default function MyFeed() {
     getBlogs();
   }, []);
   return (
-    <div className="flex">
+    <div className="flex bg-gray-900 text-white">
       <div className="w-3/4 p-4">
         <nav className="flex mb-4">
-          <div onClick={getBlogs} className="mr-4 text-blue-500 cursor-pointer">
+          <div
+            onClick={getBlogs}
+            className="mr-4 cursor-pointer hover:text-blue-500"
+          >
             Personalized
           </div>
           <div
             onClick={getFollowedBlogs}
-            className="mr-4 text-blue-500 cursor-pointer"
+            className="mr-4 cursor-pointer hover:text-blue-500"
           >
             Following
           </div>
           <div
             onClick={getFeaturedBlogs}
-            className="text-blue-500 cursor-pointer"
+            className="cursor-pointer hover:text-blue-500"
           >
             Featured
           </div>
@@ -82,18 +85,19 @@ export default function MyFeed() {
       </div>
 
       <div className="w-1/4 p-4">
-        <div className="mb-4 text-blue-500 cursor-pointer">
+        <div className="mb-4 cursor-pointer hover:text-blue-500">
           Draft
           <div
             onClick={() => {
               navigate("/profile");
             }}
+            className="hover:text-blue-500"
           >
             see all
           </div>
-          <div>Your pending Drafts : {draftlength}</div>
+          <div>Your pending Drafts: {draftlength}</div>
         </div>
-        <div className="text-blue-500 cursor-pointer">Trending</div>
+        <div className="cursor-pointer hover:text-blue-500">Trending</div>
       </div>
     </div>
   );
